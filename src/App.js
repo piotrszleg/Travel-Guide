@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import SegmentEndForm from "./pages/SegmentEndForm"
+import Map from "./pages/Map"
+import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#ff0000',
+    },
+    secondary: {
+      main: '#00fff0',
+    },
+  },
+});
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return <MuiThemeProvider theme={theme}><Map></Map></MuiThemeProvider>;
 }
 
 export default App;
