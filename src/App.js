@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import SegmentEndForm from "./pages/SegmentEndForm"
+import SegmentInfoForm from "./pages/SegmentInfoForm"
 import Map from "./pages/Map"
 import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
@@ -16,7 +17,7 @@ const theme = createTheme({
 });
 
 function App() {
-  return <MuiThemeProvider theme={theme}><Map></Map></MuiThemeProvider>;
+  return <MuiThemeProvider theme={theme}><SegmentInfoForm></SegmentInfoForm></MuiThemeProvider>;
 }
 
 export default App;

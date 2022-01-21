@@ -12,7 +12,7 @@ const Bar = ({title}) => {
   title = title ?? "Title";
   // padding:3, margin:2, 
   return (
-    <AppBar position="static" style={{ background: '#75B043', 
+    <AppBar position="static" style={{ background: '#75B043', padding:"0.4rem 0",
     borderRadius:10}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
