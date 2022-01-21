@@ -1,15 +1,13 @@
 import * as React from 'react';
 import Bar from "../components/Bar"
-import FormButtons from "../components/FormButtons"
+import Confirmation from "../components/Confirmation"
 import Button from '@mui/material/Button'
-import TextField from '@mui/material/TextField'
-import Stack from '@mui/material/Stack';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Box from '@mui/material/Box';
-import FormLabel from '@mui/material/FormLabel';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import {Closeable} from "../utils"
+import IconButton from '@mui/material/IconButton';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const style = {
   position: 'absolute',
@@ -17,49 +15,74 @@ const style = {
   top: '50vh',
   transform: 'translate(-50%, -50%)',
   width: "78vw",
-  bgcolor: 'background.paper',
+  bgcolor: '#75B043',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  padding:"38px 30px 22px"
 };
 
+const DETAILS ={ "Góry stołowe 1" : {
+  firstComment:">Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę.",
+  lastComment:">Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę.",
+  image:"gory-stolowe.jpg",
+},"Góry stołowe 2" : {
+  firstComment:">2 Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę.",
+  lastComment:">Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę.",
+  image:"gory-stolowe.jpg",
+},"Góry stołowe 3" : {
+  firstComment:">3 Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę.",
+  lastComment:">Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę.",
+  image:"gory-stolowe.jpg",
+}  }
 
-const Map = () => {
-  const [open, setOpen] = React.useState(true);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+ class Details extends Closeable {
+ 
+  render() {
+    var details=null;
+    if (this.state.open) {
+      try {
+        // await (await fetch("details/"+encodeURIComponent(this.props.name))).json();
+      } catch (e) {}
+      details =DETAILS[this.props.name];
+    }
+  // moved buttons to the right for the thumb access
   return (
-    <>
-      <Box sx={{ height: '100%', width: "100%" }}>
-        <img style={{ opacity: 0.85, height: '100%', position: 'absolute', top: 0, zIndex: -100 }} src="map.png"></img>
-        <Bar title="Kieruj się na południe"></Bar>
-
-        <Button onClick={handleOpen}>Open modal</Button>
-
-
-        <Modal
-          open={open}
-          onClose={handleClose}
+    <Modal
+          open={this.state.open}
+          onClose={this.close}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">Góry Stołowe</Typography>
-            <Typography id="modal-modal-title" variant="body">              Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę.
+            <Typography id="modal-modal-title" variant="h4" component="h4"
+            style={{ paddingBottom:"1rem", color: 'white', }}
+            >{this.props.name}</Typography>
+            <img style={{ width:"100%", paddingBottom:"1rem" }} src={details?.image} alt={this.props.name}></img>
+            <Typography id="modal-modal-title" variant="body" style={{color: 'white'}}>
+            {details?.firstComment}
 </Typography>
+<div style={{height:"1rem"}}></div>
+<Typography id="modal-modal-title" variant="body" style={{color: 'white', fontStyle: 'italic'}}>
+            {details?.lastComment}
+</Typography>
+          <div style={{height:"2rem"}}></div>
             <Button
               onClick={() => null}
               sx={{
-                color: '#75B043',
+                color: 'white',
                 float: "right"
               }}
             >
               Więcej
             </Button>
             <Button
-              onClick={() => null}
+              onClick={()=>{
+                if (this.props.onAction) this.props.onAction();
+                this.close();
+              }}
               sx={{
-                color: '#75B043',
+                color: 'white',
                 float: "right"
               }}
             >
@@ -67,35 +90,69 @@ const Map = () => {
             </Button>
           </Box>
         </Modal>
+  );
+            }
+}
 
+const LOCATIONS = [
+  {
+    x:100,
+    y:100,
+    inRoute:false,
+    name:"Góry stołowe 1"
+  },
+  {
+    x:100,
+    y:475,
+    inRoute:true,
+    name:"Góry stołowe 2"
+  },
+  {
+    x:220,
+    y:250,
+    inRoute:false,
+    name:"Góry stołowe 3"
+  }
+]
 
+class Map extends React.Component {
+  constructor(props) {
+      super(props);
+      this.modal = React.createRef();
+      this.details = React.createRef();
+      this.state = {selected:0};
+  }
+  render(){
+  return (
+      <Box sx={{ height: '100%', width: "100%" }}>
+        <img style={{ opacity: 0.85, height: '100%', position: 'absolute', top: 0, zIndex: -100 }} src="map.png" alt=""></img>
+        <Bar title="Kieruj się na południe"></Bar>
+        <Details name={LOCATIONS[this.state.selected].name} ref={this.details} onAction={()=>this.modal.current?.open()} ></Details>
 
-
-
-        <Button onClick={handleOpen}>Open modal</Button>
-        <Modal
-          open={false}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę.
-            </Typography>
-            <Button
-              onClick={() => null}
+        <Confirmation ref={this.modal} 
+        message="Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę."/>
+        
+        {LOCATIONS.map((l, i)=>
+        <IconButton
+              size="large"
+              aria-label="close"
+              aria-haspopup="true"
+              onClick={()=>{
+                this.setState({selected:i});
+                this.details.current?.open()
+              }}
               sx={{
-                color: '#75B043',
-                float: "right"
+              color:"white",
+              position:"absolute",
+              left:l.x,
+              top:l.y
               }}
             >
-              OK
-            </Button>
-          </Box>
-        </Modal>
-      </Box>
-    </>);
+              <LocationOnIcon fontSize="large" />
+            </IconButton>
+        )}
+      </Box>);
+  }
 };
 
 export default Map;
