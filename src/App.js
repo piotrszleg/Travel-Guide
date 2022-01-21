@@ -16,7 +16,7 @@ const theme = createTheme({
 });
 
 function App() {
-  return <MuiThemeProvider theme={theme}><Map></Map></MuiThemeProvider>;
+  return <MuiThemeProvider theme={theme}><SegmentEndForm></SegmentEndForm></MuiThemeProvider>;
 }
 
 export default App;

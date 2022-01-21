@@ -10,8 +10,10 @@ import Container from '@mui/material/Container';
 
 const Bar = ({title}) => {
   title = title ?? "Title";
+  // padding:3, margin:2, 
   return (
-    <AppBar position="static" style={{ background: '#75B043', padding:3, margin:2, borderRadius:10}}>
+    <AppBar position="static" style={{ background: '#75B043', 
+    borderRadius:10}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
 
