@@ -8,12 +8,14 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Box from '@mui/material/Box';
 import FormLabel from '@mui/material/FormLabel';
 
-const FormButtons = ({nextText}) => {
+const FormButtons = ({nextText, onNext, onBack}) => {
     nextText = nextText ?? "Dalej"
+    onNext=onNext ?? (()=>null);
+    onBack=onBack ?? (()=>null);
   return (
     <>
     <Button variant="outlined"
-                onClick={()=>null}
+                onClick={onBack}
                 sx={{ position: 'fixed', color: '#75B043', borderColor: '#75B043',
                 bottom: 20, left:25, display: 'block' }}
               >
@@ -21,7 +23,7 @@ const FormButtons = ({nextText}) => {
     </Button>
     <Button
     variant="contained"
-                onClick={()=>null}
+                onClick={onNext}
                 sx={{ position: 'fixed',
                 background: '#75B043',
                 bottom: 20, right:25, display: 'block' }}

@@ -8,11 +8,17 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Box from '@mui/material/Box';
 import FormLabel from '@mui/material/FormLabel';
+import {useNavigate} from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
-const SegmentEndForm = () => {
+const SegmentEndForm = ({start}) => {
+  const navigate = useNavigate();
+  const params  = useParams();
+  start = start ?? (params?.start==="true" ?? false);
+
   return (
     <Box sx={{height:'100%', width:"100%"}}>
-    <Bar title="Nowy odcinek - początek"></Bar>
+    <Bar title={start.toString()}></Bar>
 
     <Stack
       component="form"
@@ -27,8 +33,9 @@ const SegmentEndForm = () => {
       <TextField  fullWidth  margin="normal" id="outlined-basic" label="Punktacja za przejście w stronę lokacji" variant="outlined" />
       <FormLabel error={true} sx={{paddingTop:2, fontWeight:"bold"}}>Punktacja odcinka nie może być większa od zera jeżeli nie można przejść w jego stronę.</FormLabel>
     </Stack>
-
-    <FormButtons/>
+      {start ?
+    <FormButtons onNext={()=>navigate("/segment_end_form/false")}  />
+    : <FormButtons onBack={()=>navigate("/segment_end_form/true")} onNext={()=>navigate("/segment_info_form")}/>}
     </Box>
   );
 };

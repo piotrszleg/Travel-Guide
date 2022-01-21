@@ -1,12 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import SegmentEndForm from './pages/SegmentEndForm';
+import SegmentInfoForm from './pages/SegmentInfoForm';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<SegmentEndForm start={true} />} />
+        <Route path="segment_end_form/:start" element={<SegmentEndForm />} />
+        <Route path="segment_info_form" element={<SegmentInfoForm />} />
+      </Routes>
+    </BrowserRouter>,
   </React.StrictMode>,
   document.getElementById('root')
 );
