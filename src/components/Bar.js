@@ -6,9 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Cancel from '@mui/icons-material/Cancel';
 import Container from '@mui/material/Container';
+import {useNavigate} from "react-router-dom";
 
 
 const Bar = ({title}) => {
+  const navigate = useNavigate();
+
   title = title ?? "Title";
   // padding:3, margin:2, 
   return (
@@ -21,7 +24,7 @@ const Bar = ({title}) => {
               size="large"
               aria-label="close"
               aria-haspopup="true"
-              onClick={()=>null}
+              onClick={()=>navigate("/")}
               color="inherit"
             >
               <Cancel />
