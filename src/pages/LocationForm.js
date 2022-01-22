@@ -47,7 +47,7 @@ const LocationForm = (props) => {
     }
     const hight = parseInt(state.hight);
     if(isNaN(hight)) {
-      return "Wysokość nad poziomem moża musi być liczbą."
+      return "Wysokość nad poziomem morza musi być liczbą."
     }
     if(hight<=0) {
       return "Wysokość musi być większa od zera."
@@ -55,7 +55,7 @@ const LocationForm = (props) => {
 
     const hight_max = parseInt(state.hight_max);
     if(isNaN(hight_max)) {
-      return "Wysokość nad poziomem moża musi być liczbą."
+      return "Wysokość nad poziomem morza musi być liczbą."
     }
     if(hight_max<=0) {
       return "Wysokość musi być większa od zera."
@@ -117,7 +117,7 @@ const LocationForm = (props) => {
       <FormLabel error={true} sx={{paddingTop:2, fontWeight:"bold"}}>{state.error}</FormLabel>
     </Stack>
 
-    <FormButtons nextText="Dodaj lokację" onBack={()=>navigate("/segment_end_form/false")} onNext={post}/>
+    <FormButtons nextText="Dodaj lokację" onBack={()=>navigate("/")} onNext={post}/>
         <Confirmation ref={modal} 
         message="Lokacja została dodana pomyślnie."/>
     </Box>;
