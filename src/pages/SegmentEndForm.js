@@ -34,8 +34,8 @@ const SegmentEndForm = ({ start }) => {
         <FormLabel error={true} sx={{ paddingTop: 2, fontWeight: "bold" }}>Punktacja odcinka nie może być większa od zera jeżeli nie można przejść w jego stronę.</FormLabel>
       </Stack>
       {start ?
-        <FormButtons onBack={() => navigate("/")} onNext={() => navigate("/segment_end_form/false")} />
-        : <FormButtons onBack={() => navigate("/segment_end_form/true")} onNext={() => navigate("/segment_info_form")} />}
+        <FormButtons onBack={() => navigate("/")} onNext={() => navigate("/segment_end_form")} />
+        : <FormButtons onBack={() => navigate("/segment_start_form")} onNext={() => navigate("/segment_info_form")} />}
     </Box>
   );
 };

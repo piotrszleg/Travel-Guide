@@ -29,10 +29,11 @@ const Index = (props) => {
             }}
             spacing={3}
         >
+        <img style={{ width: '100%', filter:"saturate(85%) brightness(90%)" }} src="tatry.jpg" alt=""></img>
             <Typography variant="h5" sx={{fontWeight:"bold"}} >Zaimplementowane strony:</Typography>
                 {[
                     ["Formularz lokacji", "location_form"],
-                    ["Formularz odcinka", "segment_end_form/true"],
+                    ["Formularz odcinka", "segment_start_form"],
                     ["Weryfikacja zawartości", "verify"],
                     ["Edycja trasy na mapie ", "map"],
                 ].map(([ name, route ]) =>

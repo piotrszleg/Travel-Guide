@@ -11,13 +11,14 @@ import FormLabel from '@mui/material/FormLabel';
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 
-const Verification = ({ start }) => {
+const Verification = ({ reject }) => {
   const navigate = useNavigate();
   const params = useParams();
+  reject = reject ?? (params?.reject === "true" ?? false);
 
   return (
     <Box sx={{ height: '100%', width: "100%" }}>
-      <Bar title="Weryfikacja"></Bar>
+      <Bar title={"Weryfikacja"+(reject?" - Uwagi":"")}></Bar>
 
       <Stack
         component="form"
@@ -35,11 +36,33 @@ const Verification = ({ start }) => {
             Szerokość: 46
             </Typography>
         
-        
+        {reject &&
         <TextField multiline
-          rows={5} fullWidth margin="normal" id="outlined-basic" label="Wpisz uwagi ..." variant="outlined" />
+          rows={5} fullWidth margin="normal" id="outlined-basic" label="Wpisz uwagi ..." variant="outlined" />}
         </Stack>
-        <FormButtons nextText="Dodaj" onBack={() => navigate("/")} onNext={() => navigate("/segment_end_form/false")} />
+
+        {reject ? 
+        
+        
+        <FormButtons onBack={()=>navigate("/verify")} nextText="Odrzuć z uwagami"/>
+        :(<>
+          <Button variant="outlined"
+                  onClick={()=>navigate("/reject")}
+                  sx={{ position: 'fixed', color: 'red', borderColor: 'red',
+                  bottom: 20, right:170, display: 'block' }}
+                >
+                  Odrzuć
+          </Button>
+          <Button
+          variant="contained"
+          onClick={()=>null}
+                      sx={{ position: 'fixed',
+                      background: '#75B043',
+                      bottom: 20, right:25, display: 'block' }}
+                    >
+                      Zaakceptuj
+          </Button></>)
+}
     </Box>
   );
 };

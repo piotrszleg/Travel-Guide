@@ -35,7 +35,7 @@ const SegmentInfoForm = () => {
       <FormLabel error={true} sx={{paddingTop:2, fontWeight:"bold"}}>Punktacja odcinka nie może być większa od zera jeżeli nie można przejść w jego stronę.</FormLabel>
     </Stack>
 
-    <FormButtons onBack={()=>navigate("/segment_end_form/false")}/>
+    <FormButtons onBack={()=>navigate("/segment_end_form")}/>
     </Box>
   );
 };
