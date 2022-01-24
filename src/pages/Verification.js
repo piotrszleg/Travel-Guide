@@ -18,9 +18,10 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-const Verification = ({ reject }) => {
+const Verification = props => {
   const navigate = useNavigate();
-  const {id} = useParams();
+  const reject = props.reject;
+  const id = useParams().id ?? props.id;
   const modal = useRef();
   const [content, setContent] = useState("");
   const [notes, setNotes] = useState("");
@@ -38,8 +39,13 @@ const Verification = ({ reject }) => {
     const json = await response.json();
     const content = JSON.parse(json[id].content);
     let contentAsText = "";
-    for (const key in content) {
-      contentAsText+=capitalizeFirstLetter(key)+" : "+content[key]+"\n";
+    for (let key in content) {
+      let value = content[key];
+      if (value===null) {
+        value="<nie podano>";
+      }
+      key=key.replace("_", " ");
+      contentAsText+=capitalizeFirstLetter(key)+": "+value+"\n";
     }
 
     setContent(contentAsText)
@@ -94,6 +100,7 @@ const Verification = ({ reject }) => {
         
         {reject &&
         <TextField multiline
+          data-testid="rejection-notes"
           onChange={e=>setNotes(e.target.value)} value={notes}
           rows={5} fullWidth margin="normal" id="outlined-basic" label="Wpisz uwagi ..." variant="outlined" />}
         </Stack>
@@ -104,9 +111,10 @@ const Verification = ({ reject }) => {
         <FormButtons onBack={()=>navigate("/verify")} onNext={onReject} nextText="Odrzuć z uwagami"/>
         :(<>
           <Button variant="outlined"
-                  onClick={()=>navigate("/reject")}
+                  onClick={()=>navigate("/reject/"+id)}
                   sx={{ position: 'fixed', color: 'red', borderColor: 'red',
                   bottom: 20, right:170, display: 'block' }}
+                  data-testid="reject-button"
                 >
                   Odrzuć
           </Button>

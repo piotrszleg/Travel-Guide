@@ -88,7 +88,7 @@ class Details extends Closeable {
               float: "right"
             }}
           >
-            Dodaj do trasy
+            {this.props.inRoute ? "Dodaj do trasy" : "Usuń z trasy"}
           </Button>
         </Box>
       </Modal>
@@ -129,10 +129,14 @@ class Map extends React.Component {
       <Box sx={{ height: '100%', width: "100%" }}>
         <img style={{ height: '100%', position: 'absolute', top: 0, zIndex: -100, filter:"saturate(85%) brightness(80%)" }} src="map.png" alt=""></img>
         <Bar title="Kieruj się na południe"></Bar>
-        <Details name={LOCATIONS[this.state.selected].name} ref={this.details} onAction={() => this.modal.current?.open()} ></Details>
+        <Details name={LOCATIONS[this.state.selected].name} inRoute={LOCATIONS[this.state.selected].inRoute} ref={this.details} onAction={() => this.modal.current?.open()} ></Details>
 
         <Confirmation ref={this.modal}
-          message="Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę." />
+          message=
+          {LOCATIONS[this.state.selected].inRoute 
+          ? "Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę." 
+          :"Obecna trasa nie może być skrócona o Góry Stołowe. Spróbuj usunąć z niej inną lokację lub odcinek lub stworzyć nową trasę."  
+          }/>
 
         {LOCATIONS.map((l, i) =>
           <IconButton

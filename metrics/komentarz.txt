@@ -1,0 +1,13 @@
+Najlepszy wynik w tabeli wygenerowanej przez Codehawk otrzymały małe pliki z krótkimi funkcjami i niewieloma interakcjami.
+
+Prawdopodobnie większe klasy jak Map czy SegmentInfoForm będzie trzeba w przyszłości rozbić na mniejsze moduły.
+
+Część kodu formularzy to boilerplate który można by wyciągnąć do osobnego modułu. 
+Jednak jest to utrudnione ze względu na paradygmat promowany przez React i React Routing który opiera się na closure'ach.
+
+NPM Audit wskazał na problemy związane z bezpieczeństwem danych w paczkach używanych przez projekt.
+Nie ma jednak żaadnych poważnych problemów a więszkość z nich dotyczy wycieku danych które na razie są jedynie testowe.
+W momencie wydania aplikacji trzeba by było przejrzeć komunikaty i zależności między kalsami tak aby uniknąć wadliwych wersji paczek. 
+
+ESLint wskazał na nieptrzebne importy które można łatwo usunąć oraz błedy przy uzyciu hook'ów React które zostały szybko naprawione.
+Był on także używany do wykrywania prostych błędów składniowych i logicznych w czasie rozwoju aplikacji.

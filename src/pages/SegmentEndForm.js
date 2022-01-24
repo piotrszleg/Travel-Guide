@@ -29,6 +29,22 @@ const SegmentEndForm = ({ start }) => {
     error:""
   });
 
+  function getFirstError() {
+    const points = parseInt(state.points);
+    if (!state.walkable && !isNaN(points) && points>0) {
+      return "Punktacja odcinka nie może być większa od zera jeżeli nie można przejść w jego stronę."
+    }
+  }
+
+  function next(route){
+    const error = getFirstError();
+    if (error){
+      setState({...state, error: error});
+    } else {
+      navigate(route);
+    }
+  }
+
   function value(key) {
     return state[key] ?? "";
   }
@@ -66,8 +82,8 @@ const SegmentEndForm = ({ start }) => {
         <FormLabel error={true} sx={{ paddingTop: 2, fontWeight: "bold" }}>{state.error}</FormLabel>
       </Stack>
       {start ?
-        <FormButtons onBack={() => navigate("/")} onNext={() => navigate("/segment_end_form")} />
-        : <FormButtons onBack={() => navigate("/segment_start_form")} onNext={() => navigate("/segment_info_form")} />}
+        <FormButtons onBack={() => navigate("/")} onNext={() => next("/segment_end_form")} />
+        : <FormButtons onBack={() => navigate("/segment_start_form")} onNext={() => next("/segment_info_form")} />}
     </Box>
   );
 };

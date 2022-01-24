@@ -18,7 +18,7 @@ ReactDOM.render(
         <Route path="location_form" element={<LocationForm />} />
         <Route path="map" element={<Map />} />
         <Route path="verify/:id" element={<Verification />} />
-        <Route path="reject" element={<Verification reject={true} />} />
+        <Route path="reject/:id" element={<Verification reject={true} />} />
         <Route path="segment_start_form" element={<SegmentEndForm start={true} />} />
         <Route path="segment_end_form" element={<SegmentEndForm />} />
         <Route path="segment_info_form" element={<SegmentInfoForm />} />

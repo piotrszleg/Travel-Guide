@@ -28,6 +28,7 @@ const FormButtons = ({nextText, onNext, onBack, hideBackButton}) => {
                 sx={{ position: 'fixed',
                 background: '#75B043',
                 bottom: 20, right:25, display: 'block' }}
+                data-testid="next-button"
               >
                 {nextText}
     </Button>
