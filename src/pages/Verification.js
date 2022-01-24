@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Component, useState, useRef } from 'react';
 import Bar from "../components/Bar"
 import FormButtons from "../components/FormButtons"
 import Button from '@mui/material/Button'
@@ -10,11 +10,33 @@ import Box from '@mui/material/Box';
 import FormLabel from '@mui/material/FormLabel';
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
+import Confirmation from "../components/Confirmation"
 
 const Verification = ({ reject }) => {
   const navigate = useNavigate();
   const params = useParams();
   reject = reject ?? (params?.reject === "true" ?? false);
+  const modal = useRef();
+  const [notes, setNotes] = useState("");
+
+  function onAccept() {
+    modal.current?.open(()=>navigate("/"));
+  }
+
+  function onReject(){
+    modal.current?.open(()=>navigate("/"));
+  }
+
+  let modalMessage = "";
+  if (reject) {
+    if(notes!=="") {
+      modalMessage = "Zawartość została odrzucona oraz uwagi zostały przesłane.";
+    } else {
+      modalMessage = "Zawartość została odrzucona bez uwag.";
+    }
+  } else {
+    modalMessage = "Zawartość została zaakceptowana.";
+  }
 
   return (
     <Box sx={{ height: '100%', width: "100%" }}>
@@ -38,13 +60,14 @@ const Verification = ({ reject }) => {
         
         {reject &&
         <TextField multiline
+          onChange={e=>setNotes(e.target.value)} value={notes}
           rows={5} fullWidth margin="normal" id="outlined-basic" label="Wpisz uwagi ..." variant="outlined" />}
         </Stack>
 
         {reject ? 
         
         
-        <FormButtons onBack={()=>navigate("/verify")} nextText="Odrzuć z uwagami"/>
+        <FormButtons onBack={()=>navigate("/verify")} onNext={onReject} nextText="Odrzuć z uwagami"/>
         :(<>
           <Button variant="outlined"
                   onClick={()=>navigate("/reject")}
@@ -55,7 +78,7 @@ const Verification = ({ reject }) => {
           </Button>
           <Button
           variant="contained"
-          onClick={()=>null}
+          onClick={onAccept}
                       sx={{ position: 'fixed',
                       background: '#75B043',
                       bottom: 20, right:25, display: 'block' }}
@@ -63,6 +86,8 @@ const Verification = ({ reject }) => {
                       Zaakceptuj
           </Button></>)
 }
+    <Confirmation ref={modal} 
+        message={modalMessage}/>
     </Box>
   );
 };

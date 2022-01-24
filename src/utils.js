@@ -4,13 +4,17 @@ export class Closeable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: false
+            open: false,
+            onClose : null
         };
 
-        this.open = ()=>this.setState({ open: true });
+        this.open = (onClose)=>this.setState({ open: true, onClose: onClose });
         this.close = ()=>{
             if (props.onClose) {
                 props.onClose();
+            }
+            if (this.state.onClose) {
+                this.state.onClose();
             }
             this.setState({ open: false });
         }
