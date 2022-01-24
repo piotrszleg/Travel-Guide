@@ -1,0 +1,65 @@
+
+/home/piotr/Coding/travel-guide/src/components/Bar.js
+  3:8  warning  'Box' is defined but never used  no-unused-vars
+
+/home/piotr/Coding/travel-guide/src/components/Confirmation.js
+  6:20  warning  'bind' is defined but never used  no-unused-vars
+
+/home/piotr/Coding/travel-guide/src/components/FormButtons.js
+  2:8  warning  'Bar' is defined but never used               no-unused-vars
+  4:8  warning  'TextField' is defined but never used         no-unused-vars
+  5:8  warning  'Stack' is defined but never used             no-unused-vars
+  6:8  warning  'Checkbox' is defined but never used          no-unused-vars
+  7:8  warning  'FormControlLabel' is defined but never used  no-unused-vars
+  8:8  warning  'Box' is defined but never used               no-unused-vars
+  9:8  warning  'FormLabel' is defined but never used         no-unused-vars
+
+/home/piotr/Coding/travel-guide/src/pages/Index.js
+   1:17  warning  'Component' is defined but never used           no-unused-vars
+   1:28  warning  'useState' is defined but never used            no-unused-vars
+   1:38  warning  'useRef' is defined but never used              no-unused-vars
+   3:8   warning  'FormButtons' is defined but never used         no-unused-vars
+   4:8   warning  'TextField' is defined but never used           no-unused-vars
+   6:8   warning  'Checkbox' is defined but never used            no-unused-vars
+   7:8   warning  'FormControlLabel' is defined but never used    no-unused-vars
+   9:8   warning  'FormLabel' is defined but never used           no-unused-vars
+  11:8   warning  'Confirmation' is defined but never used        no-unused-vars
+  15:7   warning  'SUBGROUPS' is assigned a value but never used  no-unused-vars
+
+/home/piotr/Coding/travel-guide/src/pages/LocationForm.js
+   1:17  warning  'Component' is defined but never used                                                                                                                                                                                                                                                                                                                                                                          no-unused-vars
+   4:8   warning  'Button' is defined but never used                                                                                                                                                                                                                                                                                                                                                                             no-unused-vars
+   7:8   warning  'Checkbox' is defined but never used                                                                                                                                                                                                                                                                                                                                                                           no-unused-vars
+   8:8   warning  'FormControlLabel' is defined but never used                                                                                                                                                                                                                                                                                                                                                                   no-unused-vars
+  33:19  warning  Effect callbacks are synchronous to prevent race conditions. Put the async function inside:
+
+useEffect(() => {
+  async function fetchData() {
+    // You can await here
+    const response = await MyAPI.getData(someId);
+    // ...
+  }
+  fetchData();
+}, [someId]); // Or [] if effect doesn't need props or state
+
+Learn more about data fetching with Hooks: https://reactjs.org/link/hooks-data-fetching  react-hooks/exhaustive-deps
+
+/home/piotr/Coding/travel-guide/src/pages/SegmentEndForm.js
+   1:17  warning  'Component' is defined but never used                                                                                                                                                                                                                                                               no-unused-vars
+   1:38  warning  'useRef' is defined but never used                                                                                                                                                                                                                                                                  no-unused-vars
+   4:8   warning  'Button' is defined but never used                                                                                                                                                                                                                                                                  no-unused-vars
+  24:13  warning  Assignments to the 'start' variable from inside React Hook React.useEffect will be lost after each render. To preserve the value over time, store it in a useRef Hook and keep the mutable value in the '.current' property. Otherwise, you can move this variable directly inside React.useEffect  react-hooks/exhaustive-deps
+
+/home/piotr/Coding/travel-guide/src/pages/SegmentInfoForm.js
+   1:17  warning  'Component' is defined but never used                                                                                                                                                                                     no-unused-vars
+   1:38  warning  'useRef' is defined but never used                                                                                                                                                                                        no-unused-vars
+   4:8   warning  'Button' is defined but never used                                                                                                                                                                                        no-unused-vars
+  45:6   warning  React Hook React.useEffect has a missing dependency: 'state'. Either include it or remove the dependency array. You can also do a functional update 'setState(s => ...)' if you only need 'state' in the 'setState' call  react-hooks/exhaustive-deps
+
+/home/piotr/Coding/travel-guide/src/pages/Verification.js
+   1:17  warning  'Component' is defined but never used  no-unused-vars
+   7:8   warning  'Checkbox' is defined but never used   no-unused-vars
+  10:8   warning  'FormLabel' is defined but never used  no-unused-vars
+
+✖ 35 problems (0 errors, 35 warnings)
+

@@ -11,19 +11,58 @@ import FormLabel from '@mui/material/FormLabel';
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import Confirmation from "../components/Confirmation"
+import {CONTENT_ENDPOINT} from "../constants"
+import { useLocation} from "react-router-dom";
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 const Verification = ({ reject }) => {
   const navigate = useNavigate();
-  const params = useParams();
-  reject = reject ?? (params?.reject === "true" ?? false);
+  const {id} = useParams();
   const modal = useRef();
+  const [content, setContent] = useState("");
   const [notes, setNotes] = useState("");
 
+  const location = useLocation();
+
+  React.useEffect(async () => {
+    const response = await fetch(CONTENT_ENDPOINT, {
+      method:"get", 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      mode:"cors",
+    })
+    const json = await response.json();
+    const content = JSON.parse(json[id].content);
+    let contentAsText = "";
+    for (const key in content) {
+      contentAsText+=capitalizeFirstLetter(key)+" : "+content[key]+"\n";
+    }
+
+    setContent(contentAsText)
+  }, [location])
+
   function onAccept() {
+    fetch(CONTENT_ENDPOINT+"/accept/"+id, {
+      method:"PATCH", 
+      mode:"cors",
+    })
+    
     modal.current?.open(()=>navigate("/"));
   }
 
   function onReject(){
+    fetch(CONTENT_ENDPOINT+"/discard/"+id, {
+      method:"PATCH", 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({notes:notes}), mode:"cors",
+      mode:"cors",
+    })
     modal.current?.open(()=>navigate("/"));
   }
 
@@ -49,13 +88,8 @@ const Verification = ({ reject }) => {
         }}
         spacing={3}
       >
-        <Typography sx={{ marginTop: 1, fontWeight: "bold" }} variant="h6" >
-            Treść:<br/>
-            Pogrupa: Tatry Zachodnie<br/>
-            Wysokość: 1946<br/>
-            Wysokość Maksymalna: -<br/>
-            Długość: 19<br/>
-            Szerokość: 46
+        <Typography sx={{ marginTop: 1, fontWeight: "bold" }} variant="h6" component="pre" >
+            {content}
             </Typography>
         
         {reject &&

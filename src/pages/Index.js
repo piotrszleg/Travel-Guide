@@ -34,10 +34,10 @@ const Index = (props) => {
                 {[
                     ["Formularz lokacji", "location_form"],
                     ["Formularz odcinka", "segment_start_form"],
-                    ["Weryfikacja zawartości", "verify"],
+                    ["Weryfikacja zawartości", "verify/4"],
                     ["Edycja trasy na mapie ", "map"],
                 ].map(([ name, route ]) =>
-                <Stack direction="row" spacing={2} justifyContent="space-between">
+                <Stack key={name} direction="row" spacing={2} justifyContent="space-between">
                         <Typography variant="h5">{name}</Typography>
                         <Button variant="contained"
                             onClick={() => navigate(route)}

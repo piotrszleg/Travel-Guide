@@ -1,0 +1,23 @@
+
+    Codehawk Static Analysis Results
+    Top 15 files
+
+    | File                                               | # of Lines | Times Used/Depended On | Maintainability (higher is better) |
+    | -------------------------------------------------- | ---------- | ---------------------- | ---------------------------------- |
+    | /src/pages/Map.js                                  | 160        | 2                      | 44.4 (Needs improvement)           |
+    | /src/pages/LocationForm.js                         | 169        | 2                      | 44.5 (Needs improvement)           |
+    | /src/pages/SegmentInfoForm.js                      | 100        | 2                      | 49.1 (Needs improvement)           |
+    | /src/pages/Verification.js                         | 95         | 2                      | 50.77 (Could be better)            |
+    | /src/pages/Index.js                                | 59         | 2                      | 51.74 (Could be better)            |
+    | /src/pages/SegmentEndForm.js                       | 75         | 2                      | 53.32 (Could be better)            |
+    | /src/components/Bar.js                             | 41         | 8                      | 54.41 (Could be better)            |
+    | /src/components/FormButtons.js                     | 38         | 6                      | 58.93 (Could be better)            |
+    | /src/utils.js                                      | 24         | 3                      | 65.02 OK                           |
+    | /src/reportWebVitals.js                            | 13         | 2                      | 70.58 OK                           |
+    | /src/components/Confirmation.js                    | 48         | 5                      | 88.09 OK                           |
+    | /src/index.js                                      | 36         | 1                      | 91.25 OK                           |
+    | /src/App.test.js                                   | 8          | 1                      | 91.71 OK                           |
+    | /src/constants.js                                  | 4          | 2                      | 92.57 OK                           |
+    | /src/data/Segment.js                               | 7          | 3                      | 93.54 OK                           |
+  
+[codehawk-cli] Generating maintainability badge...

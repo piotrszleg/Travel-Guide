@@ -10,22 +10,42 @@ import Box from '@mui/material/Box';
 import FormLabel from '@mui/material/FormLabel';
 import {useNavigate} from "react-router-dom";
 import Confirmation from "../components/Confirmation"
-import {LOCATIONS_ENDPOINT} from "../constants"
-
-const SUBGROUPS = [
-  "Tatry Wysokie",
-  "Tatry Niskie",
-  "Karkonosze"
-]
+import {LOCATIONS_ENDPOINT, SUBGROUPS_ENDPOINT} from "../constants"
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import { useLocation} from "react-router-dom";
+import InputLabel from '@mui/material/InputLabel';
 
 const LocationForm = (props) => {
   const navigate = useNavigate();
   const modal = useRef();
 
   const [state, setState] = useState({
-    mount_subgr:1,
-    error:""
+    mount_subgr:null,
+    error:"",
+    subgroups:[],
+    subgroup_open:false
   });
+
+  async function updateSubgroups(mount_subgr_name) {
+    const response = await fetch(SUBGROUPS_ENDPOINT+"?text="+encodeURI(mount_subgr_name), {
+      method:"get", 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      mode:"cors",
+    })
+    const json = await response.json();
+    
+    setState(state=>({...state, subgroups:json, mount_subgr:null}));
+  }
+
+  const location = useLocation();
+
+  React.useEffect(() => {
+    updateSubgroups(state.mount_subgr_name);
+  }, [location, state.mount_subgr_name])
 
   function value(key) {
     return state[key] ?? "";
@@ -109,7 +129,23 @@ const LocationForm = (props) => {
     >
       <TextField fullWidth  margin="normal" id="nazwa-pogrupy" label="Nazwa lokacji" variant="outlined" value={value("name")} onChange={onChange("name")} />
       <FormLabel sx={{marginTop:1, fontWeight:"bold"}}>Wpisz fragment nazwy podgrupy górskiej i wybierz jedną z podpowiedzi</FormLabel>
-      <TextField fullWidth  margin="normal" id="nazwa-pogrupy" label="Nazwa pogrupy górskiej" variant="outlined" value={value("mount_subgr")} onChangeddd={onChange("mount_subgr")} />
+      <TextField fullWidth  margin="normal" id="nazwa-pogrupy" label="Nazwa pogrupy górskiej" variant="outlined" 
+      
+      onSelect={e => setState({...state, subgroup_open:true})} onBlur={e => setState({...state, subgroup_open:false})}
+      value={value("mount_subgr_name")} onChange={e=>{onChange("mount_subgr_name")(e); updateSubgroups(e.target.value);} } />
+
+<FormControl fullWidth>
+        <InputLabel id="demo-controlled-open-select-label">Podgrupa górska</InputLabel>
+      <Select
+        value={value("mount_subgr")} onChange={onChange("mount_subgr")}
+        label="Podgrupa górska"
+        labelId="demo-controlled-open-select-label"
+          id="demo-controlled-open-select"
+      >
+        {state.subgroups.map(e=><MenuItem key={e.number} value={e.number}>{e.name}</MenuItem>)}
+      </Select>
+
+      </FormControl>
 
       <TextField  fullWidth  margin="normal" id="outlined-basic" label="Wysokość npm" variant="outlined" 
       value={value("hight")} onChange={onChange("hight")}   />
