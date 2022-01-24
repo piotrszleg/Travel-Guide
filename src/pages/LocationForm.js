@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import FormLabel from '@mui/material/FormLabel';
 import {useNavigate} from "react-router-dom";
 import Confirmation from "../components/Confirmation"
+import {LOCATIONS_ENDPOINT} from "../constants"
 
 const SUBGROUPS = [
   "Tatry Wysokie",
@@ -22,6 +23,7 @@ const LocationForm = (props) => {
   const modal = useRef();
 
   const [state, setState] = useState({
+    mount_subgr:1,
     error:""
   });
 
@@ -42,9 +44,9 @@ const LocationForm = (props) => {
     if (!state.name || state.name.length<3) {
       return "Nazwa lokacji powinna mieć więcej niż 3 litery.";
     }
-    if (!state.mount_subgr || SUBGROUPS.indexOf(state.mount_subgr)===-1) {
+    /*if (!state.mount_subgr || SUBGROUPS.indexOf(state.mount_subgr)===-1) {
       return "Wybierz grupę górską z listy."
-    }
+    }*/
     const hight = parseInt(state.hight);
     if(isNaN(hight)) {
       return "Wysokość nad poziomem morza musi być liczbą."
@@ -80,7 +82,15 @@ const LocationForm = (props) => {
       setState({...state, error: error});
     } else {
       modal.current?.open();
-      console.log("Posting ", JSON.stringify(state));
+
+      fetch(LOCATIONS_ENDPOINT, {
+        method:"post", 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(state), mode:"cors",
+      })
+      
       setState({...state, error: ""});
       navigate("/");
     }
@@ -99,7 +109,7 @@ const LocationForm = (props) => {
     >
       <TextField fullWidth  margin="normal" id="nazwa-pogrupy" label="Nazwa lokacji" variant="outlined" value={value("name")} onChange={onChange("name")} />
       <FormLabel sx={{marginTop:1, fontWeight:"bold"}}>Wpisz fragment nazwy podgrupy górskiej i wybierz jedną z podpowiedzi</FormLabel>
-      <TextField fullWidth  margin="normal" id="nazwa-pogrupy" label="Nazwa pogrupy górskiej" variant="outlined" value={value("mount_subgr")} onChange={onChange("mount_subgr")} />
+      <TextField fullWidth  margin="normal" id="nazwa-pogrupy" label="Nazwa pogrupy górskiej" variant="outlined" value={value("mount_subgr")} onChangeddd={onChange("mount_subgr")} />
 
       <TextField  fullWidth  margin="normal" id="outlined-basic" label="Wysokość npm" variant="outlined" 
       value={value("hight")} onChange={onChange("hight")}   />
