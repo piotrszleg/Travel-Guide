@@ -22,21 +22,11 @@ const style = {
   padding: "38px 30px 22px"
 };
 
-const DETAILS = {
-  "Góry stołowe 1": {
-    firstComment: ">Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę.",
-    lastComment: ">Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę.",
+const DETAILS = index => ({
+    firstComment: "Góry Stołowe stanowią centralną część niecki śródsudeckiej. Największy obszar w Górach Stołowych zajmują górnokredowe skały osadowe niecki śródsudeckiej, w północno-zachodniej części leżące prawie poziomo, w północno-wschodniej zapadające lekko ku południowi.",
+    lastComment: "Są to nieliczne w Europie góry płytowe wypiętrzone ponad 30 milionów lat temu. To skalne labirynty, tajemnicze i fantazyjne formacje skalne, których nigdzie indziej w Polsce nie zobaczymy.",
     image: "gory-stolowe.jpg",
-  }, "Góry stołowe 2": {
-    firstComment: ">2 Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę.",
-    lastComment: ">Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę.",
-    image: "gory-stolowe.jpg",
-  }, "Góry stołowe 3": {
-    firstComment: ">3 Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę.",
-    lastComment: ">Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę.",
-    image: "gory-stolowe.jpg",
-  }
-}
+  })
 
 class Details extends Closeable {
 
@@ -46,7 +36,7 @@ class Details extends Closeable {
       try {
         // await (await fetch("details/"+encodeURIComponent(this.props.name))).json();
       } catch (e) { }
-      details = DETAILS[this.props.name];
+      details = DETAILS(this.props.name);
     }
     // moved buttons to the right for the thumb access
     return (
@@ -101,38 +91,38 @@ const LOCATIONS = [
     x: 100,
     y: 100,
     inRoute: true,
-    name: "Góry stołowe 1"
+    name: "Góry stołowe"
   },
   {
     x: 130,
     y: 475,
     inRoute: true,
-    name: "Góry stołowe 2"
+    name: "Góry stołowe III"
   },
   {
     x: 220,
     y: 250,
     inRoute: true,
-    name: "Góry stołowe 3"
+    name: "Góry stołowe II"
   },
   
   {
     x: 330,
     y: 100,
     inRoute: false,
-    name: "Góry stołowe 1"
+    name: "Góry stołowe IV"
   },
   {
     x: 60,
     y: 700,
     inRoute: false,
-    name: "Góry stołowe 2"
+    name: "Góry stołowe V"
   },
   {
     x: 300,
     y: 730,
     inRoute: false,
-    name: "Góry stołowe 3"
+    name: "Góry stołowe VI"
   },
 ]
 
@@ -170,8 +160,8 @@ class Map extends React.Component {
         <Confirmation ref={this.modal}
           message=
           {this.selectedLocation().inRoute 
-          ? `Rozszerzono obecną trasę o ${this.selectedLocation().name}.`
-          :`Skrócono obecną trasę o ${this.selectedLocation().name}.`  
+          ? `Rozszerzono obecną trasę o "${this.selectedLocation().name}".`
+          :`Skrócono obecną trasę o "${this.selectedLocation().name}".`  
           }/>
 
         {this.state.locations.map((l, i) =>
