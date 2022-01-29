@@ -104,7 +104,7 @@ const LOCATIONS = [
     name: "Góry stołowe 1"
   },
   {
-    x: 100,
+    x: 130,
     y: 475,
     inRoute: true,
     name: "Góry stołowe 2"
@@ -117,20 +117,20 @@ const LOCATIONS = [
   },
   
   {
-    x: 300,
+    x: 330,
     y: 100,
     inRoute: false,
     name: "Góry stołowe 1"
   },
   {
-    x: 100,
+    x: 60,
     y: 700,
     inRoute: false,
     name: "Góry stołowe 2"
   },
   {
     x: 300,
-    y: 705,
+    y: 730,
     inRoute: false,
     name: "Góry stołowe 3"
   },
@@ -158,7 +158,7 @@ class Map extends React.Component {
   render() {
     return (
       <Box sx={{ height: '100%', width: "100%" }}>
-        <img style={{ height: '100%', position: 'absolute', top: 0, zIndex: -100, filter:"saturate(85%) brightness(80%)" }} src="map.png" alt=""></img>
+        <img style={{ height: '100%', position: 'absolute', top: 0, zIndex: -100, filter:"saturate(85%) brightness(80%)" }} src="map3.png" alt=""></img>
         <Bar title="Kieruj się na południe"></Bar>
         <Details name={this.selectedLocation().name} 
           inRoute={this.selectedLocation().inRoute} 
@@ -176,6 +176,7 @@ class Map extends React.Component {
 
         {this.state.locations.map((l, i) =>
           <IconButton
+            key={i}
             size="large"
             aria-label="close"
             aria-haspopup="true"
