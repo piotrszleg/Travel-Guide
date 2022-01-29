@@ -1,12 +1,5 @@
 import * as React from 'react';
-import Bar from "../components/Bar"
 import Button from '@mui/material/Button'
-import TextField from '@mui/material/TextField'
-import Stack from '@mui/material/Stack';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Box from '@mui/material/Box';
-import FormLabel from '@mui/material/FormLabel';
 
 const FormButtons = ({nextText, onNext, onBack, hideBackButton}) => {
     nextText = nextText ?? "Dalej"

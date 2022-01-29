@@ -1,7 +1,6 @@
-import React, { Component, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import Bar from "../components/Bar"
 import FormButtons from "../components/FormButtons"
-import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Stack from '@mui/material/Stack';
 import Checkbox from '@mui/material/Checkbox';
@@ -12,7 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormLabel from '@mui/material/FormLabel';
-import {useNavigate, useLocation} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import SEGMENT from "../data/Segment";
 import {SUBGROUPS_ENDPOINT} from "../constants"
 
@@ -21,13 +20,16 @@ const COLORS = [{"name":"Czerwony"},{"name":"Zielony"},{"name":"Niebieski"},{"na
 const SegmentInfoForm = () => {
   const navigate = useNavigate();
 
-  const location = useLocation()
+  const [state, setState] = useState({
+    error:"",
+    subgroups:[]
+  });
 
   React.useEffect(() => {
     // runs on location, i.e. route, change
-    setState({...state, ...SEGMENT.info});
+    setState(state=>({...state, ...SEGMENT.info}));
     updateSubgroups(state.mount_subgr_name);
-  }, [location])
+  }, [state.mount_subgr_name])
 
   async function updateSubgroups(mount_subgr_name) {
     const response = await fetch(SUBGROUPS_ENDPOINT+"?text="+encodeURI(mount_subgr_name), {
@@ -41,12 +43,6 @@ const SegmentInfoForm = () => {
     
     setState(state=>({...state, subgroups:json, mount_subgr:null}));
   }
-
-
-  const [state, setState] = useState({
-    error:"",
-    subgroups:[]
-  });
 
   function value(key) {
     return state[key] ?? "";

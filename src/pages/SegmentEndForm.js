@@ -1,7 +1,6 @@
-import React, { Component, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import Bar from "../components/Bar"
 import FormButtons from "../components/FormButtons"
-import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Stack from '@mui/material/Stack';
 import Checkbox from '@mui/material/Checkbox';
@@ -20,10 +19,8 @@ const SegmentEndForm = ({ start }) => {
   start = start ?? (params?.start === "true" ?? false);
 
   React.useEffect(() => {
-    // runs on location, i.e. route, change
-    start = start ?? (params?.start === "true" ?? false);
-    setState({error:state.error, ...(start ? SEGMENT.start : SEGMENT.end)});
-  }, [location])
+    setState(state=>({error:state.error, ...(start ? SEGMENT.start : SEGMENT.end)}));
+  }, [location, start])
 
   const [state, setState] = useState({
     error:""

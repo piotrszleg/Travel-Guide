@@ -1,4 +1,4 @@
-import React, { Component, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Bar from "../components/Bar"
 import FormButtons from "../components/FormButtons"
 import Button from '@mui/material/Button'

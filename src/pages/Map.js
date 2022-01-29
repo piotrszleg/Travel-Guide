@@ -150,7 +150,7 @@ class Map extends React.Component {
     this.setState(state=>({
       ...state,
       locations:state.locations.map(
-        (l, i)=>i==state.selected 
+        (l, i)=>i===state.selected 
           ? {...l, inRoute:!l.inRoute} 
           : l)
     }))

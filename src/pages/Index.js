@@ -1,22 +1,10 @@
-import React, { Component, useState, useRef } from 'react';
+import React from 'react';
 import Bar from "../components/Bar"
-import FormButtons from "../components/FormButtons"
-import TextField from '@mui/material/TextField'
 import Stack from '@mui/material/Stack';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Box from '@mui/material/Box';
-import FormLabel from '@mui/material/FormLabel';
 import { useNavigate } from "react-router-dom";
-import Confirmation from "../components/Confirmation"
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-
-const SUBGROUPS = [
-    "Tatry Wysokie",
-    "Tatry Niskie",
-    "Karkonosze"
-]
 
 const Index = (props) => {
     const navigate = useNavigate();
