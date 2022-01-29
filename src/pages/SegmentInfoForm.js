@@ -14,25 +14,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormLabel from '@mui/material/FormLabel';
 import {useNavigate, useLocation} from "react-router-dom";
 import SEGMENT from "../data/Segment";
+import {SUBGROUPS_ENDPOINT} from "../constants"
 
 const COLORS = [{"name":"Czerwony"},{"name":"Zielony"},{"name":"Niebieski"},{"name":"Żółty"},{"name":"Czarny"}];
-
-/*
-// sql injection (comment in the location name)
-const result = await fetch(API_URL+"locations", {method:"post", body: JSON.stringify({
-  name:"Test#--//", hight:10, hight_max:10, longitude:10, latitude:10, mount_subgr:0: 
-})});
-// check for internal server error as a result of sql error
-assert(result.status!=500);
-
-// json injection (JSON special characters in the location name)
-const result = await fetch(API_URL+"locations", {method:"post", body: JSON.stringify({
-  name:"Test\"',}{][", hight:10, hight_max:10, longitude:10, latitude:10, mount_subgr:0: 
-})});
-// check for internal server error as a result of sql error
-assert(result.status!=500);
-*/
-
 
 const SegmentInfoForm = () => {
   const navigate = useNavigate();
@@ -42,10 +26,26 @@ const SegmentInfoForm = () => {
   React.useEffect(() => {
     // runs on location, i.e. route, change
     setState({...state, ...SEGMENT.info});
+    updateSubgroups(state.mount_subgr_name);
   }, [location])
 
+  async function updateSubgroups(mount_subgr_name) {
+    const response = await fetch(SUBGROUPS_ENDPOINT+"?text="+encodeURI(mount_subgr_name), {
+      method:"get", 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      mode:"cors",
+    })
+    const json = await response.json();
+    
+    setState(state=>({...state, subgroups:json, mount_subgr:null}));
+  }
+
+
   const [state, setState] = useState({
-    error:""
+    error:"",
+    subgroups:[]
   });
 
   function value(key) {
@@ -75,7 +75,19 @@ const SegmentInfoForm = () => {
       spacing={3}
     >
       <FormLabel sx={{marginTop:1, fontWeight:"bold"}}>Wpisz fragment nazwy podgrupy górskiej i wybierz jedną z podpowiedzi</FormLabel>
-      <TextField fullWidth  margin="normal" id="nazwa-pogrupy" label="Nazwa pogrupy górskiej" variant="outlined" value={value("mount_subgr")} onChange={onChange("mount_subgr")}  />
+      <TextField fullWidth  margin="normal" id="nazwa-pogrupy" label="Nazwa pogrupy górskiej" variant="outlined" value={value("mount_subgr_name")} onChange={onChange("mount_subgr_name")}  />
+      <FormControl fullWidth>
+        <InputLabel id="demo-controlled-open-select-label">Podgrupa górska</InputLabel>
+      <Select
+        value={value("mount_subgr")} onChange={onChange("mount_subgr")}
+        label="Podgrupa górska"
+        labelId="demo-controlled-open-select-label"
+          id="demo-controlled-open-select"
+      >
+        {state.subgroups.map(e=><MenuItem key={e.number} value={e.number}>{e.name}</MenuItem>)}
+      </Select>
+
+      </FormControl>
       <FormControlLabel sx={{fontWeight:"bold"}} control={<Checkbox defaultChecked value={value("isOfficial")} onChange={onChange("isOfficial")}  />} label="Czy odcinek jest oficjalny" labelPlacement="end"   />
       <TextField  fullWidth  margin="normal" id="outlined-basic" label="Czas trwania" variant="outlined" value={value("duration")} onChange={onChange("duration")} />
       <TextField  fullWidth  margin="normal" id="outlined-basic" label="Długość" variant="outlined" value={value("length")} onChange={onChange("length")}  />

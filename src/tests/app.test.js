@@ -55,3 +55,19 @@ test('allows to reject content with notes', async () => {
 
     expect(spy).toHaveBeenCalled();
 })
+
+/*
+// sql injection (comment in the location name)
+const result = await fetch(API_URL+"locations", {method:"post", body: JSON.stringify({
+  name:"Test#--//", hight:10, hight_max:10, longitude:10, latitude:10, mount_subgr:0: 
+})});
+// check for internal server error as a result of sql error
+assert(result.status!=500);
+
+// json injection (JSON special characters in the location name)
+const result = await fetch(API_URL+"locations", {method:"post", body: JSON.stringify({
+  name:"Test\"',}{][", hight:10, hight_max:10, longitude:10, latitude:10, mount_subgr:0: 
+})});
+// check for internal server error as a result of sql error
+assert(result.status!=500);
+*/

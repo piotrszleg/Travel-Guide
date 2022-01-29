@@ -88,7 +88,7 @@ class Details extends Closeable {
               float: "right"
             }}
           >
-            {this.props.inRoute ? "Dodaj do trasy" : "Usuń z trasy"}
+            {this.props.inRoute ?  "Usuń z trasy" : "Dodaj do trasy"}
           </Button>
         </Box>
       </Modal>
@@ -100,7 +100,7 @@ const LOCATIONS = [
   {
     x: 100,
     y: 100,
-    inRoute: false,
+    inRoute: true,
     name: "Góry stołowe 1"
   },
   {
@@ -112,9 +112,28 @@ const LOCATIONS = [
   {
     x: 220,
     y: 250,
+    inRoute: true,
+    name: "Góry stołowe 3"
+  },
+  
+  {
+    x: 300,
+    y: 100,
+    inRoute: false,
+    name: "Góry stołowe 1"
+  },
+  {
+    x: 100,
+    y: 700,
+    inRoute: false,
+    name: "Góry stołowe 2"
+  },
+  {
+    x: 300,
+    y: 705,
     inRoute: false,
     name: "Góry stołowe 3"
-  }
+  },
 ]
 
 class Map extends React.Component {
@@ -122,23 +141,40 @@ class Map extends React.Component {
     super(props);
     this.modal = React.createRef();
     this.details = React.createRef();
-    this.state = { selected: 0 };
+    this.state = { selected: 0, locations:LOCATIONS };
+  }
+  selectedLocation(){
+    return this.state.locations[this.state.selected];
+  }
+  switchInRoute() {
+    this.setState(state=>({
+      ...state,
+      locations:state.locations.map(
+        (l, i)=>i==state.selected 
+          ? {...l, inRoute:!l.inRoute} 
+          : l)
+    }))
   }
   render() {
     return (
       <Box sx={{ height: '100%', width: "100%" }}>
         <img style={{ height: '100%', position: 'absolute', top: 0, zIndex: -100, filter:"saturate(85%) brightness(80%)" }} src="map.png" alt=""></img>
         <Bar title="Kieruj się na południe"></Bar>
-        <Details name={LOCATIONS[this.state.selected].name} inRoute={LOCATIONS[this.state.selected].inRoute} ref={this.details} onAction={() => this.modal.current?.open()} ></Details>
+        <Details name={this.selectedLocation().name} 
+          inRoute={this.selectedLocation().inRoute} 
+          ref={this.details} onAction={() => {
+            this.switchInRoute();
+            this.modal.current?.open();
+        }} ></Details>
 
         <Confirmation ref={this.modal}
           message=
-          {LOCATIONS[this.state.selected].inRoute 
-          ? "Obecna trasa nie może być rozszerzona o Góry Stołowe. Spróbuj dodać do trasy bliższą lokację lub odcinek lub stworzyć nową trasę." 
-          :"Obecna trasa nie może być skrócona o Góry Stołowe. Spróbuj usunąć z niej inną lokację lub odcinek lub stworzyć nową trasę."  
+          {this.selectedLocation().inRoute 
+          ? `Rozszerzono obecną trasę o ${this.selectedLocation().name}.`
+          :`Skrócono obecną trasę o ${this.selectedLocation().name}.`  
           }/>
 
-        {LOCATIONS.map((l, i) =>
+        {this.state.locations.map((l, i) =>
           <IconButton
             size="large"
             aria-label="close"
@@ -149,6 +185,7 @@ class Map extends React.Component {
             }}
             sx={{
               color: "white",
+              opacity : l.inRoute ? 1 : 0.5,
               position: "absolute",
               left: l.x,
               top: l.y
