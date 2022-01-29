@@ -4,15 +4,12 @@ import FormButtons from "../components/FormButtons"
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Stack from '@mui/material/Stack';
-import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import FormLabel from '@mui/material/FormLabel';
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import Confirmation from "../components/Confirmation"
 import {CONTENT_ENDPOINT} from "../constants"
-import { useLocation} from "react-router-dom";
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -26,30 +23,30 @@ const Verification = props => {
   const [content, setContent] = useState("");
   const [notes, setNotes] = useState("");
 
-  const location = useLocation();
-
-  React.useEffect(async () => {
-    const response = await fetch(CONTENT_ENDPOINT, {
-      method:"get", 
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      mode:"cors",
-    })
-    const json = await response.json();
-    const content = JSON.parse(json[id].content);
-    let contentAsText = "";
-    for (let key in content) {
-      let value = content[key];
-      if (value===null) {
-        value="<nie podano>";
+  React.useEffect(() => {
+    (async ()=> {
+      const response = await fetch(CONTENT_ENDPOINT, {
+        method:"get", 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        mode:"cors",
+      })
+      const json = await response.json();
+      const content = JSON.parse(json[id].content);
+      let contentAsText = "";
+      for (let key in content) {
+        let value = content[key];
+        if (value===null) {
+          value="<nie podano>";
+        }
+        key=key.replace("_", " ");
+        contentAsText+=capitalizeFirstLetter(key)+": "+value+"\n";
       }
-      key=key.replace("_", " ");
-      contentAsText+=capitalizeFirstLetter(key)+": "+value+"\n";
-    }
 
-    setContent(contentAsText)
-  }, [location])
+      setContent(contentAsText)
+    })();
+  }, [id])
 
   function onAccept() {
     fetch(CONTENT_ENDPOINT+"/accept/"+id, {
@@ -66,7 +63,7 @@ const Verification = props => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({notes:notes}), mode:"cors",
+      body: JSON.stringify({notes:notes}),
       mode:"cors",
     })
     modal.current?.open(()=>navigate("/"));
