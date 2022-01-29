@@ -11,7 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormLabel from '@mui/material/FormLabel';
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import SEGMENT, {segmentToPost} from "../data/Segment";
 import {SUBGROUPS_ENDPOINT, SEGMENTS_ENDPOINT} from "../constants"
 import Confirmation from "../components/Confirmation"
@@ -20,6 +20,7 @@ const COLORS = [{"name":"Czerwony"},{"name":"Zielony"},{"name":"Niebieski"},{"na
 
 const SegmentInfoForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const modal = useRef();
 
   const [state, setState] = useState({
@@ -29,9 +30,12 @@ const SegmentInfoForm = () => {
 
   React.useEffect(() => {
     // runs on location, i.e. route, change
-    setState(state=>({...state, ...SEGMENT.info}));
+    setState(state=>({...state, ...SEGMENT.info, error:""}));
+  }, [location])
+
+  React.useEffect(() => {
     updateSubgroups(state.mount_subgr_name ?? "");
-  }, [state.mount_subgr_name])
+  }, [location, state.mount_subgr_name])
 
   async function updateSubgroups(mount_subgr_name) {
     const response = await fetch(SUBGROUPS_ENDPOINT+"?text="+encodeURI(mount_subgr_name), {
@@ -47,7 +51,12 @@ const SegmentInfoForm = () => {
   }
 
   function getFirstError() {
-    return null;
+    if (!state.mount_subgr) {
+      return "Wybierz podgrupę górską z listy";
+    }
+    if (!state.color_trail) {
+      return "Wybierz kolor szlaku z listy";
+    }
   }
 
   function value(key) {

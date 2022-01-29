@@ -44,7 +44,7 @@ const SegmentEndForm = ({ start }) => {
   }
 
   React.useEffect(() => {
-    setState(state => ({ ...state, ...(start ? SEGMENT.start : SEGMENT.end) }));
+    setState(state => ({ ...state, ...(start ? SEGMENT.start : SEGMENT.end), error:"" }));
   }, [location, start])
 
   React.useEffect(() => {
@@ -56,6 +56,9 @@ const SegmentEndForm = ({ start }) => {
     const points = parseInt(state.points);
     if (!state.walkable && !isNaN(points) && points > 0) {
       return "Punktacja odcinka nie może być większa od zera jeżeli nie można przejść w jego stronę."
+    }
+    if (!state.location) {
+      return "Wybierz lokację z listy";
     }
   }
 

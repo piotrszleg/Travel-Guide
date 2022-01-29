@@ -22,7 +22,8 @@ const SEGMENT = {
 
 export function segmentToPost() {
     const result = {
-        name: "",
+        name:     SEGMENT.start.locations.find(l=>l.content==SEGMENT.start.location).name 
+        + " - " + SEGMENT.end.locations.find(l=>l.content==SEGMENT.end.location).name,
         isOfficial: SEGMENT.info.isOfficial ? true : false,
         duration: SEGMENT.info.duration ?? 0, 
         length: SEGMENT.info.length ?? 0,
