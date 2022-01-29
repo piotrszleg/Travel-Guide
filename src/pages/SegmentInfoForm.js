@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Bar from "../components/Bar"
 import FormButtons from "../components/FormButtons"
 import TextField from '@mui/material/TextField'
@@ -12,13 +12,15 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormLabel from '@mui/material/FormLabel';
 import {useNavigate} from "react-router-dom";
-import SEGMENT from "../data/Segment";
-import {SUBGROUPS_ENDPOINT} from "../constants"
+import SEGMENT, {segmentToPost} from "../data/Segment";
+import {SUBGROUPS_ENDPOINT, SEGMENTS_ENDPOINT} from "../constants"
+import Confirmation from "../components/Confirmation"
 
 const COLORS = [{"name":"Czerwony"},{"name":"Zielony"},{"name":"Niebieski"},{"name":"Żółty"},{"name":"Czarny"}];
 
 const SegmentInfoForm = () => {
   const navigate = useNavigate();
+  const modal = useRef();
 
   const [state, setState] = useState({
     error:"",
@@ -28,7 +30,7 @@ const SegmentInfoForm = () => {
   React.useEffect(() => {
     // runs on location, i.e. route, change
     setState(state=>({...state, ...SEGMENT.info}));
-    updateSubgroups(state.mount_subgr_name);
+    updateSubgroups(state.mount_subgr_name ?? "");
   }, [state.mount_subgr_name])
 
   async function updateSubgroups(mount_subgr_name) {
@@ -44,21 +46,47 @@ const SegmentInfoForm = () => {
     setState(state=>({...state, subgroups:json, mount_subgr:null}));
   }
 
+  function getFirstError() {
+    return null;
+  }
+
   function value(key) {
     return state[key] ?? "";
   }
 
-  function onChange(key) {
+  function onChange(key, checkbox=false) {
     return function(event) {
       const newState = {
         ...state,
-        [key]:event.target.value
+        [key]:checkbox ? event.target.checked : event.target.value
       };
       setState(newState)
       SEGMENT.info = newState;
     }
   }
-  // Punktacja odcinka nie może być większa od zera jeżeli nie można przejść w jego stronę.
+
+  function post() {
+    const error = getFirstError();
+    if (error) {
+      setState({ ...state, error: error });
+    } else {
+      modal.current?.open(()=>navigate("/"));
+
+      const data = segmentToPost();
+      console.log(data);
+
+      fetch(SEGMENTS_ENDPOINT, {
+        method: "post",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data), mode: "cors",
+      })
+
+      setState({ ...state, error: "" });
+    }
+  }
+
   return (
     <Box sx={{height:'100%', width:"100%"}}>
     <Bar title="Nowy odcinek - informacje"></Bar>
@@ -84,7 +112,7 @@ const SegmentInfoForm = () => {
       </Select>
 
       </FormControl>
-      <FormControlLabel sx={{fontWeight:"bold"}} control={<Checkbox defaultChecked value={value("isOfficial")} onChange={onChange("isOfficial")}  />} label="Czy odcinek jest oficjalny" labelPlacement="end"   />
+      <FormControlLabel sx={{fontWeight:"bold"}} control={<Checkbox defaultChecked value={value("isOfficial")} onChange={onChange("isOfficial", true)}  />} label="Czy odcinek jest oficjalny" labelPlacement="end"   />
       <TextField  fullWidth  margin="normal" id="outlined-basic" label="Czas trwania" variant="outlined" value={value("duration")} onChange={onChange("duration")} />
       <TextField  fullWidth  margin="normal" id="outlined-basic" label="Długość" variant="outlined" value={value("length")} onChange={onChange("length")}  />
       <FormControl fullWidth>
@@ -93,14 +121,16 @@ const SegmentInfoForm = () => {
         value={value("color_trail")} onChange={onChange("color_trail")} 
         label="Kolor szlaku"
       >
-        {COLORS.map((e, i)=><MenuItem value={i}>{e.name}</MenuItem>)}
+        {COLORS.map((e, i)=><MenuItem key={i} value={i}>{e.name}</MenuItem>)}
       </Select>
 </FormControl>
 
       <FormLabel error={true} sx={{paddingTop:2, fontWeight:"bold"}}>{state.error}</FormLabel>
     </Stack>
 
-    <FormButtons onBack={()=>navigate("/segment_end_form")}/>
+    <FormButtons onBack={()=>navigate("/segment_end_form")} onNext={post}/>
+    <Confirmation ref={modal}
+    message="Odcinek został dodany pomyślnie." />
     </Box>
   );
 };
