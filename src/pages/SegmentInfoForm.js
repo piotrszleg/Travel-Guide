@@ -82,7 +82,6 @@ const SegmentInfoForm = () => {
       modal.current?.open(()=>navigate("/"));
 
       const data = segmentToPost();
-      console.log(data);
 
       fetch(SEGMENTS_ENDPOINT, {
         method: "post",

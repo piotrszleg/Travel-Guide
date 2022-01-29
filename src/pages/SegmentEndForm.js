@@ -52,7 +52,6 @@ const SegmentEndForm = ({ start }) => {
   }, [location, state.locationName])
 
   function getFirstError() {
-    console.log(state);
     const points = parseInt(state.points);
     if (!state.walkable && !isNaN(points) && points > 0) {
       return "Punktacja odcinka nie może być większa od zera jeżeli nie można przejść w jego stronę."
