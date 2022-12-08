@@ -4,7 +4,7 @@ As the final task of my software engineering course I had to implement a part of
 
 The app utilises MUI React toolkit, performs API calls and has autonamtic compontent tests using React Testing Library.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
