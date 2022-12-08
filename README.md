@@ -1,4 +1,4 @@
-# Fronted for a travel guide appliaction
+# Travel guide application
 
 As the final task of software engineering course I had to implement a part of my project in a frontend framework.
 
