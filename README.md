@@ -1,8 +1,8 @@
 # Travel Guide Application
 
-As the final task of software engineering course I had to implement a part of my project in a frontend framework.
+As the final task of my software engineering course I had to implement a part of my team's project in a frontend framework.
 
-The page utilises MUI React toolkit, performs API calls and has autonamtic compontent tests using React Testing Library.
+The app utilises MUI React toolkit, performs API calls and has autonamtic compontent tests using React Testing Library.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
